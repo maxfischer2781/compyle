@@ -3,7 +3,7 @@ from fractions import Fraction as PyFraction
 
 import attr
 
-from .transpyle import Expression, Names, Transpylation, E, T, Identifier
+from .transpyle import Expression, Names, Transpylation, Identifier
 from .variables import value_expression, VALUE_TYPES
 
 

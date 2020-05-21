@@ -5,7 +5,7 @@ import pyparsing as pp
 
 from .interpret import eval
 from .parser import TOP_LEVEL
-from ._debug import debug_enabled, debug_print, DEBUG_CHANNEL
+from ._debug import debug_enabled, DEBUG_CHANNEL
 
 
 # Debugging for PyParsing
