@@ -17,7 +17,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    install_requires=["pyparsing", "attrs"],
+    install_requires=["pyparsing", "attrs", "typing_extensions"],
     extras_require={
         'test': ["pytest", "black; implementation_name=='cpython'"],
     },
