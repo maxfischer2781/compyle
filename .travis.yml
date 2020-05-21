@@ -17,8 +17,8 @@ before_script:
 script:
   - |
     if [ -x "$(command -v black)" ]; then
-      black  --target-version py36 --check src/ cobald_tests/
+      black  --target-version py36 --check compyle/
     fi
-  - python $DEBUG -m coverage run pytest
+  - python -m coverage run -m pytest
 after_success:
   - coverage report && codecov
