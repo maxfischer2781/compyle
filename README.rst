@@ -5,10 +5,10 @@ Toy Language to Python Interpreter/Transpiler
 This is an example project for implementing a basic interpreter-slash-transpiler
 from a simple toy language to Python::
 
-    $ python3 -m compyle 'a := 3
-    b := 4 : 12
-    >>> (a / b) * 2'
-    18
+    $ python3 -m compyle --show-interpret --show-transpyle '
+    a := 3                      # assign
+    >>> (a / 2:3) * (4 * 12)    # evaluate
+    '
 
 The Toy Language
 ################
