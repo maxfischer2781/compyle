@@ -28,7 +28,7 @@ class Integer(Expression[PyInteger]):
         )
 
     def evaluate(self, namespace: Mapping[Identifier, Any]) -> int:
-        return self.value
+        return PyInteger(self.value)
 
 
 VALUE_TYPES.add(Integer)
