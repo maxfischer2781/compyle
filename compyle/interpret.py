@@ -35,7 +35,9 @@ def simplify(instruction: Union[Assign, Evaluate]):
     expression = instruction.expression.specialize({})
     if expression is not instruction.expression:
         new_source = repr(unparse(expression))
-        debug_print(DEBUG_CHANNEL.INTERPRET, repr(unparse(instruction)), '=>', new_source)
+        debug_print(
+            DEBUG_CHANNEL.INTERPRET, repr(unparse(instruction)), "=>", new_source
+        )
     else:
         debug_print(DEBUG_CHANNEL.INTERPRET, repr(unparse(instruction)))
     debug_print(DEBUG_CHANNEL.TRANSPYLE, expression.transpyle().source)

@@ -10,7 +10,7 @@ def interactive():
     print("so we put an eval in your eval")
     print("so you can eval while you eval")
     print("                 - AD, 2020 AD")
-    run(iter(input, ''))
+    run(iter(input, ""))
 
 
 def noninteractive(inputs: Iterable[str]):

@@ -47,14 +47,14 @@ def unparse_reference(what: Reference):
     return what.identifier
 
 
-@rule(pp.Word(pp.nums) + pp.Suppress(":") - pp.Word(pp.nums).setName('integer'))
+@rule(pp.Word(pp.nums) + pp.Suppress(":") - pp.Word(pp.nums).setName("integer"))
 def fraction(result: pp.ParseResults):
     """A Fraction literal, such as ``37 : 13``"""
     numerator, denominator = map(int, result)
     return Fraction(numerator=numerator, denominator=denominator)
 
 
-@rule(pp.Combine(pp.Word(pp.nums) + "." - pp.Word(pp.nums).setName('integer')))
+@rule(pp.Combine(pp.Word(pp.nums) + "." - pp.Word(pp.nums).setName("integer")))
 def decimal(result: pp.ParseResults):
     """A Fraction as decimal literal, such as ``13.37``"""
     numerator = int(result[0].replace(".", ""))

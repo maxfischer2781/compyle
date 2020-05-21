@@ -24,12 +24,13 @@ def on_start_parse(instring, loc, expr):
 
 def on_find_parse(instring, startloc, endloc, expr, toks):
     from .parser import unparse
+
     print("! +Found:", expr, " -> ", repr(unparse(toks[0])))
     show_parse_location(instring, startloc, endloc)
 
 
 def on_fail_parse(instring, loc, expr, exc: pp.ParseBaseException):
-    print("! Reject:", expr, '(', exc, ')')
+    print("! Reject:", expr, "(", exc, ")")
     show_parse_location(instring, exc.column)
 
 

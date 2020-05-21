@@ -23,9 +23,7 @@ class Integer(Expression[PyInteger]):
         return self
 
     def transpyle(self):
-        return Transpylation(
-            self, f"__PyInteger__({self.value})"
-        )
+        return Transpylation(self, f"__PyInteger__({self.value})")
 
     def evaluate(self, namespace: Mapping[Identifier, Any]) -> int:
         return PyInteger(self.value)
