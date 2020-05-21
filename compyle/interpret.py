@@ -29,23 +29,28 @@ def eval(instructions: Iterable[Union[Assign, Evaluate]]):
             raise EvaluationError(f"Unknown instruction: {instruction}")
 
 
-def eval_assign(instruction: Assign, namespace: Mapping[Identifier, Expression]):
+def simplify(instruction: Union[Assign, Evaluate]):
     from .parser import unparse
+
     expression = instruction.expression.specialize({})
     if expression is not instruction.expression:
         new_source = repr(unparse(expression))
         debug_print(DEBUG_CHANNEL.INTERPRET, repr(unparse(instruction)), '=>', new_source)
     else:
         debug_print(DEBUG_CHANNEL.INTERPRET, repr(unparse(instruction)))
+    debug_print(DEBUG_CHANNEL.TRANSPYLE, expression.transpyle().source)
+    return expression
+
+
+def eval_assign(instruction: Assign, namespace: Mapping[Identifier, Expression]):
+    expression = simplify(instruction)
     return {**namespace, instruction.name: expression}
 
 
 def eval_evaluate(instruction: Evaluate, namespace: Mapping[Identifier, Expression]):
-    from .parser import unparse
-    debug_print(DEBUG_CHANNEL.INTERPRET, repr(unparse(instruction)))
-    debug_print(DEBUG_CHANNEL.TRANSPYLE, repr(instruction.expression.transpyle().source))
+    expression = simplify(instruction)
     try:
-        return instruction.expression.evaluate(namespace=namespace)
+        return expression.evaluate(namespace=namespace)
     except KeyError as e:
         (key,) = e.args
         return f"NameError: name {key!r} is not defined"
