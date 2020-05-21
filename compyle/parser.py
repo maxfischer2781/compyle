@@ -42,7 +42,7 @@ def reference(result: pp.ParseResults):
     return Reference(result[0])
 
 
-@unparse.register
+@unparse.register(Reference)
 def unparse_reference(what: Reference):
     return what.identifier
 
@@ -62,7 +62,7 @@ def decimal(result: pp.ParseResults):
     return Fraction(numerator=numerator, denominator=denominator)
 
 
-@unparse.register
+@unparse.register(Fraction)
 def unparse_fraction(what: Fraction):
     return f"{what.numerator} : {what.denominator}"
 
@@ -73,7 +73,7 @@ def integer(result: pp.ParseResults):
     return Integer(value=int(result[0]))
 
 
-@unparse.register
+@unparse.register(Integer)
 def unparse_integer(what: Integer):
     return f"{what.value}"
 
@@ -89,7 +89,7 @@ def binary_operator(result: pp.ParseResults):
     return OperatorBinary(symbol=symbol, children=(lhs, rhs))
 
 
-@unparse.register
+@unparse.register(OperatorBinary)
 def unparse_binary_operator(what: OperatorBinary):
     lhs, rhs = map(unparse, what.children)
     return f"({lhs} {what.symbol} {rhs})"
@@ -114,7 +114,7 @@ def assignment(result: pp.ParseResults):
     return Assign(name=name, expression=expression)
 
 
-@unparse.register
+@unparse.register(Assign)
 def unparse_assignment(what: Assign):
     return f"{what.name} := {unparse(what.expression)}"
 
@@ -126,7 +126,7 @@ def evaluation(result: pp.ParseResults):
     return Evaluate(expression=expression)
 
 
-@unparse.register
+@unparse.register(Evaluate)
 def unparse_evaluation(what: Evaluate):
     return f">>> {unparse(what.expression)}"
 

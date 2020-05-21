@@ -32,7 +32,7 @@ class Integer(Expression[PyInteger]):
 VALUE_TYPES.add(Integer)
 
 
-@value_expression.register
+@value_expression.register(int)
 def int_expression(value: int):
     return Integer(value)
 
@@ -58,6 +58,6 @@ class Fraction(Expression[PyFraction]):
 VALUE_TYPES.add(Fraction)
 
 
-@value_expression.register
+@value_expression.register(PyFraction)
 def fraction_expression(value: PyFraction):
     return Fraction(numerator=value.numerator, denominator=value.denominator)

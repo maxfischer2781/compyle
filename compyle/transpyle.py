@@ -1,8 +1,6 @@
 """
 The interpreter/transpiler core definition
 """
-from __future__ import annotations
-
 from typing import Optional, Mapping, Any, Callable, Set, TypeVar, Generic, Union, Tuple
 from typing_extensions import Protocol, runtime_checkable
 from collections import ChainMap
@@ -58,7 +56,7 @@ class Names(Protocol):
     #: names which represent some value
     bound: Mapping[Identifier, Any] = attr.ib(factory=dict)
 
-    def bind(self, namespace: Mapping[Identifier, Expression]) -> Names:
+    def bind(self, namespace: 'Mapping[Identifier, Expression]') -> 'Names':
         return Names(
             free=self.free - namespace.keys(), bound={**self.bound, **namespace}
         )
@@ -75,8 +73,8 @@ class Expression(Protocol[T]):
         raise NotImplementedError
 
     def specialize(
-        self: E, namespace: Mapping[Identifier, Expression]
-    ) -> Union[E, Expression]:
+        self: E, namespace: 'Mapping[Identifier, Expression]'
+    ) -> 'Union[E, Expression]':
         """Create a new Expression to which all of ``namespace`` is bound already"""
         raise NotImplementedError
 
@@ -85,11 +83,11 @@ class Expression(Protocol[T]):
     # these would be single-dispatch methods. This would allow us to define
     # per-language transpilers/evaluators (e.g. python_backend.transpile,
     # cpp_backend.transpile, ...).
-    def transpyle(self: E) -> Transpylation[E, T]:
+    def transpyle(self: E) -> 'Transpylation[E, T]':
         """Create appropriate Python code for this expression"""
         raise NotImplementedError
 
-    def evaluate(self, namespace: Mapping[Identifier, Expression]) -> T:
+    def evaluate(self, namespace: 'Mapping[Identifier, Expression]') -> T:
         """Evaluate the expression to its value"""
         return self.transpyle().evaluate(namespace)
 
@@ -102,12 +100,12 @@ class Transpylation(Generic[E, T]):
     source: str
     _code: Optional[Any] = attr.ib(init=False, default=None)
 
-    def evaluate(self, namespace: Mapping[Identifier, Expression]) -> T:
+    def evaluate(self, namespace: 'Mapping[Identifier, Expression]') -> T:
         assert self.parent.names.bound.keys().isdisjoint(namespace)
         if self._code is None:
             object.__setattr__(self, "_code", self.__compile())
         return eval(
-            self._code, {"__namespace__": namespace, **self.parent.names.bound,}
+            self._code, {"__namespace__": namespace, **self.parent.names.bound}
         )
 
     def __compile(self) -> Callable[..., T]:
