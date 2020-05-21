@@ -10,6 +10,8 @@ from a simple toy language to Python::
     >>> (a / 2:3) * (4 * 12)    # evaluate
     '
 
+The ``pyparsing`` and ``attrs`` libraries are required.
+
 The Toy Language
 ################
 
