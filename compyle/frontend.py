@@ -46,7 +46,9 @@ def set_parser_debug(on_success=False):
 
 
 def parse_source(source: Iterable[str]):
-    for line in source:
+    for line in map(str.strip, source):
+        if not line:
+            continue
         try:
             instruction = TOP_LEVEL.parseString(line, parseAll=True)[0]
         except pp.ParseBaseException as exc:
