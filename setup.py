@@ -18,4 +18,7 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=["pyparsing", "attrs"],
+    extras_require={
+        'test': ["pytest", "black; implementation_name=='cpython'"],
+    },
 )
