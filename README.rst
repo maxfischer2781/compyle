@@ -54,22 +54,27 @@ Points of Interest
 The ``compyle`` setup is roughly divided into three sections:
 
 * The abstract expression/statement setup, defining how expressions are handled:
-    * `transpyle.py <compyle/transpyle.py>`_ defines expressions, how they are
-      specialized, transpyled and evaluated.
-    * `interpret.py <compyle/interpret.py>`_ defines statements, how they are
-      processed and evaluated.
+
+  * `transpyle.py <compyle/transpyle.py>`_ defines expressions, how they are
+    specialized, transpyled and evaluated.
+  * `interpret.py <compyle/interpret.py>`_ defines statements, how they are
+    processed and evaluated.
+
 * The concrete object setup, defining what expressions can express:
-    * `variables.py <compyle/variables.py>`_ defines references and how to
-      translate (Python) values back to expressions. This allows evaluating
-      expressions and references to specialise them.
-    * `numbers.py <compyle/numbers.py>`_ defines the expressions for Integers
-      and Fractions. There are no floats, as "float literals" are translated
-      to Fractions.
-    * `operator.py <compyle/operators.py>`_ defines basic arithmetic operators
+
+  * `variables.py <compyle/variables.py>`_ defines references and how to
+    translate (Python) values back to expressions. This allows evaluating
+    expressions and references to specialise them.
+  * `numbers.py <compyle/numbers.py>`_ defines the expressions for Integers
+    and Fractions. There are no floats, as "float literals" are translated
+    to Fractions.
+  * `operator.py <compyle/operators.py>`_ defines basic arithmetic operators
+
 * The client setup, defining how to write expressions and statements:
-    * `parser.py <compyle/parser.py>`_ defines parsing of *Toy Language*
-      to expressions and statements.
-    * `frontend.py <compyle/frontend.py>`_ defines the command line interface.
+
+  * `parser.py <compyle/parser.py>`_ defines parsing of *Toy Language*
+    to expressions and statements.
+  * `frontend.py <compyle/frontend.py>`_ defines the command line interface.
 
 Restrictions
 ############
