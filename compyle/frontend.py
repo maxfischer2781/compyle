@@ -58,15 +58,10 @@ def parse_source(source: Iterable[str]):
 
 
 def run(source: Iterable[str]):
+    if debug_enabled('frontend'):
+        set_parser_debug(on_success=True)
     debug_print('frontend', "I heard you like to eval")
     debug_print('frontend', "so we put an eval in your eval")
     debug_print('frontend', "so you can eval while you eval")
     for result in eval(parse_source(source)):
         print(result)
-
-
-if __name__ == "__main__":
-    if debug_enabled('frontend'):
-        set_parser_debug(on_success=True)
-    executable, *code = sys.argv
-    run(itertools.chain.from_iterable(block.splitlines() for block in code))
