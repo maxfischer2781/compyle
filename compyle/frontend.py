@@ -1,12 +1,11 @@
 from typing import Iterable
-import itertools
 import sys
 
 import pyparsing as pp
 
 from .interpret import eval
 from .parser import TOP_LEVEL
-from ._debug import debug_enabled, debug_print
+from ._debug import debug_enabled, debug_print, DEBUG_CHANNEL
 
 
 # Debugging for PyParsing
@@ -58,10 +57,7 @@ def parse_source(source: Iterable[str]):
 
 
 def run(source: Iterable[str]):
-    if debug_enabled('frontend'):
+    if debug_enabled(DEBUG_CHANNEL.PARSING):
         set_parser_debug(on_success=True)
-    debug_print('frontend', "I heard you like to eval")
-    debug_print('frontend', "so we put an eval in your eval")
-    debug_print('frontend', "so you can eval while you eval")
     for result in eval(parse_source(source)):
         print(result)

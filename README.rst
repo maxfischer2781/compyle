@@ -10,8 +10,8 @@ from a simple toy language to Python::
     >>> (a / b) * 2'
     18
 
-Toy Language
-############
+The Toy Language
+################
 
 The *Toy Language* itself consists of expressions, which are:
 
@@ -90,4 +90,5 @@ These *could* be lifted, but would complicate understanding of the code.
 * Expressions represent all levels of AST, values and transpiled code.
 * Scoping/Namespaces are not first-class, but tied to Expressions.
 * Specialisation is all-or-nothing and eager.
+* Operators are untyped and always follow the same rules.
 * The transpilation target is plain Python source code.

@@ -3,7 +3,7 @@ from typing import Mapping, Iterable, Union
 import attr
 
 from .transpyle import EvaluationError, Expression, Identifier
-from ._debug import debug_print
+from ._debug import debug_print, DEBUG_CHANNEL
 
 
 @attr.s(frozen=True, auto_attribs=True)
@@ -34,15 +34,16 @@ def eval_assign(instruction: Assign, namespace: Mapping[Identifier, Expression])
     expression = instruction.expression.specialize({})
     if expression is not instruction.expression:
         new_source = repr(unparse(expression))
-        debug_print('interpret', repr(unparse(instruction)), '=>', new_source)
+        debug_print(DEBUG_CHANNEL.INTERPRET, repr(unparse(instruction)), '=>', new_source)
     else:
-        debug_print('interpret', repr(unparse(instruction)))
+        debug_print(DEBUG_CHANNEL.INTERPRET, repr(unparse(instruction)))
     return {**namespace, instruction.name: expression}
 
 
 def eval_evaluate(instruction: Evaluate, namespace: Mapping[Identifier, Expression]):
     from .parser import unparse
-    debug_print('interpret', repr(unparse(instruction)))
+    debug_print(DEBUG_CHANNEL.INTERPRET, repr(unparse(instruction)))
+    debug_print(DEBUG_CHANNEL.TRANSPYLE, repr(instruction.expression.transpyle().source))
     try:
         return instruction.expression.evaluate(namespace=namespace)
     except KeyError as e:
