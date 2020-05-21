@@ -104,7 +104,7 @@ NESTED << pp.MatchFirst(
     )
 )
 
-LINE_COMMENT = pp.Optional(pp.Literal("#") + pp.SkipTo(pp.StringEnd()))
+LINE_COMMENT = pp.Suppress(pp.Optional(pp.Literal("#") + pp.SkipTo(pp.StringEnd())))
 
 
 @rule(IDENTIFIER.copy() - pp.Suppress(":=") - (binary_operator | NESTED) + LINE_COMMENT)
