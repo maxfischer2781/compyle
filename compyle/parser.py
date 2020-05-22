@@ -1,8 +1,20 @@
 """
-b := a + 2
-a := 30 + 10
+Language parser/unparser definition
 
->> b + a
+This module works bidirectional:
+It can go from source code to expressions/statements and back again.
+
+The parser serves to translate human-readable source-code into executable objects:
+from *Toy Language* strings to ``transpyle`` expressions and ``interpret`` statements.
+The parser is defined as a series of ``rule`` definitions, some of which are nested.
+
+The unparser serves to provide a canonical source-code from executable objects:
+from ``transpyle`` expressions and ``interpret`` statements to *Toy Language* strings.
+The unparser is defined as separate ``unparse`` definitions, which resolve recursively.
+
+Notably, unparser -> parser is exact whereas parser -> unparser may lose some details.
+For example, parsing-unparsing a decimal literal results in a fraction literal
+that represents the same value.
 """
 from typing import Callable, Optional
 from functools import singledispatch
@@ -22,6 +34,12 @@ pp.ParserElement.enablePackrat()
 
 @singledispatch
 def unparse(what):
+    """
+    Translate an expression/statement to its canonical source code
+
+    This is a ``singledispatch`` function. Use ``unparse.register(Type)`` to
+    register an unparsing rule for a given ``Type``.
+    """
     return repr(what)
 
 
@@ -37,6 +55,7 @@ def rule(syntax: pp.ParserElement, name: Optional[str] = None):
     during debugging. Otherwise, the name of the decorated function
     is used in uppercase.
     """
+
     def bind_rule(
         transformation: Callable[[pp.ParseResults], Expression]
     ) -> pp.ParserElement:
@@ -50,9 +69,9 @@ def rule(syntax: pp.ParserElement, name: Optional[str] = None):
 
 # Note: PyParsing already ships with lots of helpers in `pyparsing.pyparsing_common`.
 #       If you are *not* building a demonstrator, use these wherever applicable.
-IDENTIFIER = pp.Word(pp.alphas, pp.alphas + "_").setName('IDENTIFIER')
-DIGITS = pp.Word(pp.nums).setName('DIGITS')
-SIGN = pp.MatchFirst(['-', '+'])
+IDENTIFIER = pp.Word(pp.alphas, pp.alphas + "_").setName("IDENTIFIER")
+DIGITS = pp.Word(pp.nums).setName("DIGITS")
+SIGN = pp.MatchFirst(["-", "+"])
 
 
 @rule(IDENTIFIER.copy())
@@ -66,7 +85,7 @@ def unparse_reference(what: Reference):
     return what.identifier
 
 
-@rule(pp.Combine(pp.Optional(SIGN, default='+') + DIGITS))
+@rule(pp.Combine(pp.Optional(SIGN, default="+") + DIGITS))
 def integer(result: pp.ParseResults):
     """An integer literal, such as ``1337``"""
     return Integer(value=int(result[0]))
