@@ -44,7 +44,10 @@ def rule(syntax: pp.ParserElement, name: Optional[str] = None):
     return bind_rule
 
 
-IDENTIFIER = pp.Word(pp.alphas, pp.alphas + "_")
+# Note: PyParsing already ships with lots of helpers in `pyparsing.pyparsing_common`.
+#       If you are *not* building a demonstrator, use these wherever applicable.
+IDENTIFIER = pp.Word(pp.alphas, pp.alphas + "_").setName('IDENTIFIER')
+DIGITS = pp.Word(pp.nums).setName('DIGITS')
 
 
 @rule(IDENTIFIER.copy())
@@ -58,7 +61,7 @@ def unparse_reference(what: Reference):
     return what.identifier
 
 
-@rule(pp.Word(pp.nums) + pp.Suppress(":") - pp.Word(pp.nums).setName("integer"))
+@rule(DIGITS + pp.Suppress(":") - DIGITS)
 def fraction(result: pp.ParseResults):
     """A Fraction literal, such as ``37 : 13``"""
     numerator, denominator = map(int, result)
@@ -78,7 +81,7 @@ def unparse_fraction(what: Fraction):
     return f"{what.numerator} : {what.denominator}"
 
 
-@rule(pp.Word(pp.nums))
+@rule(DIGITS.copy())
 def integer(result: pp.ParseResults):
     """An integer literal, such as ``1337``"""
     return Integer(value=int(result[0]))
