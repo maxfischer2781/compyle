@@ -22,6 +22,17 @@ def unparse(what):
 
 
 def rule(syntax: pp.ParserElement, name: Optional[str] = None):
+    """
+    Define a rule to transform a syntax into an object
+
+    This is a two-stage decorator, which takes a ``syntax`` description
+    (a ``pyparsing`` parser) and then decorates a function to
+    transform the parsing result to an expression.
+
+    If ``name`` is given, it becomes the display name of the parser
+    during debugging. Otherwise, the name of the decorated function
+    is used in uppercase.
+    """
     def bind_rule(
         transformation: Callable[[pp.ParseResults], Expression]
     ) -> pp.ParserElement:
