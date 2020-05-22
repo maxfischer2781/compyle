@@ -13,8 +13,11 @@ def evaluate(source: Iterable[str]):
 
 EXPRESSIONS = [
     ('3', 3),
+    ('-4', -4),
     ('3:4', Fraction(3, 4)),
+    ('3 : 4', Fraction(3, 4)),
     ('9:12', Fraction(3, 4)),
+    ('-9:12', Fraction(-3, 4)),
     ('9.12', Fraction(912, 100)),
     ('3/4', Fraction(3, 4)),
     ('3*4', 12),
