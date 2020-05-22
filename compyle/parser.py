@@ -65,7 +65,7 @@ def fraction(result: pp.ParseResults):
     return Fraction(numerator=numerator, denominator=denominator)
 
 
-@rule(pp.Combine(pp.Word(pp.nums) + "." - pp.Word(pp.nums).setName("integer")))
+@rule(pp.Regex(r"\d+\.\d+"))
 def decimal(result: pp.ParseResults):
     """A Fraction as decimal literal, such as ``13.37``"""
     numerator = int(result[0].replace(".", ""))
