@@ -120,7 +120,7 @@ PRIMITIVES = pp.MatchFirst((reference, fraction, decimal, integer))
 NESTED = pp.Forward()
 
 
-@rule(NESTED + pp.MatchFirst(list("+-*/")) - NESTED, name="LHS [+-*/] RHS")
+@rule(NESTED + pp.oneOf("+ - * /") - NESTED, name="LHS [+-*/] RHS")
 def binary_operator(result: pp.ParseResults):
     """Binary operator of nested expressions, such as ``(13 + 37) * 13.12"""
     lhs, symbol, rhs = result
