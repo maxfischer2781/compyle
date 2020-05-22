@@ -48,6 +48,7 @@ def rule(syntax: pp.ParserElement, name: Optional[str] = None):
 #       If you are *not* building a demonstrator, use these wherever applicable.
 IDENTIFIER = pp.Word(pp.alphas, pp.alphas + "_").setName('IDENTIFIER')
 DIGITS = pp.Word(pp.nums).setName('DIGITS')
+SIGN = pp.MatchFirst(['-', '+'])
 
 
 @rule(IDENTIFIER.copy())
@@ -61,11 +62,22 @@ def unparse_reference(what: Reference):
     return what.identifier
 
 
-@rule(DIGITS + pp.Suppress(":") - DIGITS)
+@rule(pp.Combine(pp.Optional(SIGN, default='+') + DIGITS.copy()))
+def integer(result: pp.ParseResults):
+    """An integer literal, such as ``1337``"""
+    return Integer(value=int(result[0]))
+
+
+@unparse.register(Integer)
+def unparse_integer(what: Integer):
+    return f"{what.value}"
+
+
+@rule(integer + pp.Suppress(":") - integer)
 def fraction(result: pp.ParseResults):
     """A Fraction literal, such as ``37 : 13``"""
-    numerator, denominator = map(int, result)
-    return Fraction(numerator=numerator, denominator=denominator)
+    numerator, denominator = result
+    return Fraction(numerator=numerator.value, denominator=denominator.value)
 
 
 @rule(pp.Regex(r"\d+\.\d+"))
@@ -79,17 +91,6 @@ def decimal(result: pp.ParseResults):
 @unparse.register(Fraction)
 def unparse_fraction(what: Fraction):
     return f"{what.numerator} : {what.denominator}"
-
-
-@rule(DIGITS.copy())
-def integer(result: pp.ParseResults):
-    """An integer literal, such as ``1337``"""
-    return Integer(value=int(result[0]))
-
-
-@unparse.register(Integer)
-def unparse_integer(what: Integer):
-    return f"{what.value}"
 
 
 PRIMITIVES = pp.MatchFirst((reference, fraction, decimal, integer))
