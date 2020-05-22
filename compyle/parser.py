@@ -15,6 +15,10 @@ from .numbers import Integer, Fraction
 from .operators import OperatorBinary
 from .interpret import Evaluate, Assign
 
+# ToyLanguage and transpyle are free of side-effects.
+# We can use PyParsing's memoizing to speed up parsing.
+pp.ParserElement.enablePackrat()
+
 
 @singledispatch
 def unparse(what):
