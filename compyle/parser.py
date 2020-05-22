@@ -62,7 +62,7 @@ def unparse_reference(what: Reference):
     return what.identifier
 
 
-@rule(pp.Combine(pp.Optional(SIGN, default='+') + DIGITS.copy()))
+@rule(pp.Combine(pp.Optional(SIGN, default='+') + DIGITS))
 def integer(result: pp.ParseResults):
     """An integer literal, such as ``1337``"""
     return Integer(value=int(result[0]))
@@ -122,7 +122,7 @@ NESTED << pp.MatchFirst(
 LINE_COMMENT = pp.Suppress(pp.Optional(pp.Literal("#") + pp.SkipTo(pp.StringEnd())))
 
 
-@rule(IDENTIFIER.copy() - pp.Suppress(":=") - (binary_operator | NESTED) + LINE_COMMENT)
+@rule(IDENTIFIER - pp.Suppress(":=") - (binary_operator | NESTED) + LINE_COMMENT)
 def assignment(result: pp.ParseResults):
     """Assignment to a name, such as ``foo := 12 + bar"""
     name, expression = result
