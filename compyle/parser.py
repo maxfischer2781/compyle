@@ -30,6 +30,8 @@ from .interpret import Evaluate, Assign
 # ToyLanguage and transpyle are free of side-effects.
 # We can use PyParsing's memoizing to speed up parsing.
 pp.ParserElement.enablePackrat()
+# ToyLanguage is line-separated. Disallow skipping newlines when parsing.
+pp.ParserElement.setDefaultWhitespaceChars(' \t')
 
 
 @singledispatch
@@ -74,6 +76,7 @@ DIGITS = pp.Word(pp.nums).setName("DIGITS")
 SIGN = pp.MatchFirst(["-", "+"])
 
 
+# Expressions
 @rule(IDENTIFIER.copy())
 def reference(result: pp.ParseResults):
     """A named reference, such as ``Kevin``"""
@@ -142,7 +145,7 @@ NESTED << pp.MatchFirst(
     )
 )
 
-LINE_COMMENT = pp.Suppress(pp.Optional(pp.Literal("#") + pp.SkipTo(pp.StringEnd())))
+LINE_COMMENT = pp.Suppress(pp.Optional(pp.Literal("#") + ... + pp.LineEnd()))
 
 
 @rule(IDENTIFIER - pp.Suppress(":=") - (binary_operator | NESTED) + LINE_COMMENT)
@@ -157,6 +160,7 @@ def unparse_assignment(what: Assign):
     return f"{what.name} := {unparse(what.expression)}"
 
 
+# Statements
 @rule(pp.Suppress(">>>") - (binary_operator | NESTED) + LINE_COMMENT)
 def evaluation(result: pp.ParseResults):
     """Evaluation of an expression, such as ``>>> a + b``"""

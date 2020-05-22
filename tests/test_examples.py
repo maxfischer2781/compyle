@@ -29,3 +29,8 @@ EXPRESSIONS = [
 @pytest.mark.parametrize('expression, result', EXPRESSIONS)
 def test_evaluate(expression, result):
     assert next(evaluate([f'>>> {expression}'])) == result
+
+
+@pytest.mark.parametrize('expression, result', EXPRESSIONS)
+def test_evaluate_commented(expression, result):
+    assert next(evaluate([f'>>> {expression} # Hello World'])) == result
