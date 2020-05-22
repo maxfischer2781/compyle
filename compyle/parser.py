@@ -31,7 +31,7 @@ from .interpret import Evaluate, Assign
 # We can use PyParsing's memoizing to speed up parsing.
 pp.ParserElement.enablePackrat()
 # ToyLanguage is line-separated. Disallow skipping newlines when parsing.
-pp.ParserElement.setDefaultWhitespaceChars(' \t')
+pp.ParserElement.setDefaultWhitespaceChars(" \t")
 
 
 @singledispatch
